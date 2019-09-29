@@ -11,7 +11,7 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = @movies.sort! { |a,b| a.title <=> b.title }
+    @movies = @movie.sort!
   end
  
   def new
