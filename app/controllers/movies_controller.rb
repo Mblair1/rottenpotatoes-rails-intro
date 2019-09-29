@@ -11,7 +11,11 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.find(params[:sort])
+    @movies = Movie.order(params[:sort])
+  end
+  
+  def sort_column
+    Product.column_names.include?(params[:sort]) ? params[:sort] : "name"
   end
 
   def new
