@@ -11,13 +11,9 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.order(params[:sort])
+    @movies = @movies.sort! { |a,b| a.title <=> b.title }
   end
-  
-  def sort_column
-    Product.column_names.include?(params[:sort]) ? params[:sort] : "name"
-  end
-
+ 
   def new
     # default: render 'new' template
   end
