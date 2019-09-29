@@ -11,7 +11,7 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movie = Movie.sort params[:title]
+    @movie = Movie.find params[:id]
   end
 
   def new
