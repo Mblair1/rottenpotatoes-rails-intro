@@ -4,9 +4,9 @@
 %table#movies.table.table-striped.col-md-12
   %thead
     %tr
-      %td= link_to "Movie Titles", :sort => "name"
+      %th{:class => ('hilite' if @clicked == 'title')}= link_to "Movie Titles", :clicked => 'title'
       %th Rating
-      %th Release Date
+      %th{:class => ('hilite' if @clicked == 'release_date')}= link_to "Release Date", :clicked => 'release_date'
       %th More Info
   %tbody
     - @movies.each do |movie|
