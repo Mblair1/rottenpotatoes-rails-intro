@@ -11,9 +11,8 @@ class MoviesController < ApplicationController
   end
 
   def index
-      
-      
-      
+    #Check to see if we have clicked a link to sort our column of movies
+    #And store them into the session hash if possible
     if params.key?(:clicked)
 			session[:clicked] = params[:clicked]
 		elsif session.key?(:clicked)
@@ -21,19 +20,27 @@ class MoviesController < ApplicationController
 			redirect_to movies_path(params) and return
 	  end
 	  
+	  #Check the session hash to determine which way we would like to sort our movies
     if session[:clicked] == 'title'
       @clicked = 'title'
     elsif session[:clicked] == 'release_date'
       @clicked = 'release_date'
     end
    
+   #Check if we have any raitings we would like to filter by
+   #And store them into the session hash if possible
 	  if params.key?(:ratings)
 			session[:ratings] = params[:ratings]
 		elsif session.key?(:ratings)
 			params[:ratings] = session[:ratings]
 			redirect_to movies_path(params) and return
+		else
+		  @selected_ratings = Movie.ratings
 		end
 		
+		#If our session has no ratings, then we must not have any ratings we wish to
+		#Filter by, then we must set initial conditions to load our application
+		#By setting @all_ratings and @selected_ratings
     if session.key?(:ratings)
       @all_ratings = Movie.ratings
       @selected_ratings = session[:ratings]
@@ -41,8 +48,8 @@ class MoviesController < ApplicationController
       @selected_ratings = Movie.ratings
     end
     
-    
-
+    #Filter our our movies by the ratings selected. If no ratings are selected,
+    #Order by whatever column head is clicked.
     if session.key?(:ratings)
       @movies = Movie.order(session[:clicked])
     
@@ -52,8 +59,6 @@ class MoviesController < ApplicationController
     else
       @movies = Movie.order(params[:clicked])
     end
-    
-    
   end
  
   def new
