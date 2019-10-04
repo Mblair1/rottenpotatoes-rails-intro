@@ -11,7 +11,9 @@ class MoviesController < ApplicationController
   end
 
   def index
-    
+      
+      
+      
     if params.key?(:clicked)
 			session[:clicked] = params[:clicked]
 		elsif session.key?(:clicked)
@@ -19,32 +21,34 @@ class MoviesController < ApplicationController
 			redirect_to movies_path(params) and return
 	  end
 	  
+    if session[:clicked] == 'title'
+      @clicked = 'title'
+    elsif session[:clicked] == 'release_date'
+      @clicked = 'release_date'
+    end
+   
 	  if params.key?(:ratings)
 			session[:ratings] = params[:ratings]
 		elsif session.key?(:ratings)
 			params[:ratings] = session[:ratings]
 			redirect_to movies_path(params) and return
 		end
-    @selected_ratings = session[:ratings]
-   
+		
     if session.key?(:ratings)
-      ratingsArr = params[:ratings].keys
       @all_ratings = Movie.ratings
+      @selected_ratings = session[:ratings]
     else
-      ratingsArr = @all_ratings = Movie.ratings
+      @selected_ratings = Movie.ratings
     end
     
-    if session[:clicked] == 'title'
-      @clicked = 'title'
-    elsif session[:clicked] == 'release_date'
-      @clicked = 'release_date'
-    end
+    
 
     if session.key?(:ratings)
-      @movies = []
-      ratingsArr.each do |rating|
-        @movies += Movie.order(session[:clicked]).where(rating: rating)
-      end
+      @movies = Movie.order(session[:clicked])
+    
+      if(session[:ratings].keys.any?)
+        @movies = @movies.where(:rating => session[:ratings].keys)
+      end  
     else
       @movies = Movie.order(params[:clicked])
     end
