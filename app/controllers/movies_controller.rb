@@ -36,6 +36,7 @@ class MoviesController < ApplicationController
 			redirect_to movies_path(params) and return
 		else
 		  @selected_ratings = Movie.ratings
+		  @all_ratings = Movie.ratings
 		end
 		
 		#If our session has no ratings, then we must not have any ratings we wish to
