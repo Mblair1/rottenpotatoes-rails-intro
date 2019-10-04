@@ -11,12 +11,33 @@ class MoviesController < ApplicationController
   end
 
   def index
+    
+    
+    
+   
+    if params.key?(:ratings)
+      ratingsArr = params[:ratings].keys
+      @all_ratings = Movie.ratings
+    else
+      ratingsArr = @all_ratings = Movie.ratings
+    end
+    
     if params[:clicked] == 'title'
       @clicked = 'title'
     elsif params[:clicked] == 'release_date'
       @clicked = 'release_date'
     end
+
+    if params.key?(:ratings)
+      @movies = []
+      ratingsArr.each do |rating|
+        @movies += Movie.where(rating: rating)
+      end
+    else
       @movies = Movie.order(params[:clicked])
+    end
+    
+    
   end
  
   def new
