@@ -5,7 +5,7 @@
   Include:
   - @all_ratings.each do |rating|
     = rating
-    = check_box_tag "ratings[#{rating}]"
+    = check_box_tag "ratings[#{rating}]", rating, @selected_ratings.keys.include?(rating)
   = submit_tag 'Refresh', :id => "ratings_form"
 
 %table#movies.table.table-striped.col-md-12
